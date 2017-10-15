@@ -149,7 +149,7 @@ func main() {
 		cli.BoolFlag{
 			Name:   "skip-untagged",
 			Usage:  "skip publish if not local .tags file",
-			EnvVar: "PLUGIN_SKIP_UNTAGGGED",
+			EnvVar: "PLUGIN_SKIP_UNTAGGED",
 		},
 		cli.StringFlag{
 			Name:   "repo",

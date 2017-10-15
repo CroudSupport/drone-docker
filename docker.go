@@ -47,7 +47,7 @@ type (
 		Squash        bool     // Docker build squash
 		Pull          bool     // Docker build pull
 		Compress      bool     // Docker build compress
-		SkipUntagged  bool     // Docker build compress
+		SkipUntagged  bool     // Docker build skip untagged
 		Repo          string   // Docker build repository
 		LabelSchema   []string // Label schema map
 	}
@@ -65,10 +65,12 @@ type (
 func (p Plugin) Exec() error {
 	// if SkipUntagged and there is no .tags file exit
 	if p.Build.SkipUntagged {
-	//	if _, err := os.Stat(".tags"); os.IsNotExist(err) {
+		if _, err := os.Stat(".tags"); os.IsNotExist(err) {
 			fmt.Println("no local .tags file and SkipUntagged = true, skipping publish")
 			return nil
-	//	}
+		}
+	} else{
+		fmt.Println("publishing image...")
 	}
 
 	// start the Docker daemon server
