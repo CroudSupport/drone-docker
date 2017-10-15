@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/urfave/cli"
 
-	"github.com/drone-plugins/drone-docker"
+	"github.com/CroudSupport/drone-docker"
 )
 
 var build = "0" // build number set at compile-time
@@ -146,6 +146,11 @@ func main() {
 			Usage:  "compress the build context using gzip",
 			EnvVar: "PLUGIN_COMPRESS",
 		},
+		cli.BoolFlag{
+			Name:   "skip-untagged",
+			Usage:  "skip publish if not local .tags file",
+			EnvVar: "PLUGIN_SKIP_UNTAGGGED",
+		},
 		cli.StringFlag{
 			Name:   "repo",
 			Usage:  "docker repository",
@@ -194,18 +199,19 @@ func run(c *cli.Context) error {
 			Email:    c.String("docker.email"),
 		},
 		Build: docker.Build{
-			Remote:      c.String("remote.url"),
-			Name:        c.String("commit.sha"),
-			Dockerfile:  c.String("dockerfile"),
-			Context:     c.String("context"),
-			Tags:        c.StringSlice("tags"),
-			Args:        c.StringSlice("args"),
-			ArgsEnv:     c.StringSlice("args-from-env"),
-			Squash:      c.Bool("squash"),
-			Pull:        c.BoolT("pull-image"),
-			Compress:    c.Bool("compress"),
-			Repo:        c.String("repo"),
-			LabelSchema: c.StringSlice("label-schema"),
+			Remote:        c.String("remote.url"),
+			Name:          c.String("commit.sha"),
+			Dockerfile:    c.String("dockerfile"),
+			Context:       c.String("context"),
+			Tags:          c.StringSlice("tags"),
+			Args:          c.StringSlice("args"),
+			ArgsEnv:       c.StringSlice("args-from-env"),
+			Squash:        c.Bool("squash"),
+			Pull:          c.BoolT("pull-image"),
+			Compress:      c.Bool("compress"),
+			SkipUntagged:  c.Bool("skip-untagged"),
+			Repo:          c.String("repo"),
+			LabelSchema:   c.StringSlice("label-schema"),
 		},
 		Daemon: docker.Daemon{
 			Registry:      c.String("docker.registry"),
