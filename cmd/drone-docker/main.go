@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/urfave/cli"
 
-	"github.com/drone-plugins/drone-docker"
+	"github.com/CroudSupport/drone-docker"
 )
 
 var build = "0" // build number set at compile-time
@@ -161,6 +161,11 @@ func main() {
 			Usage:  "compress the build context using gzip",
 			EnvVar: "PLUGIN_COMPRESS",
 		},
+		cli.BoolFlag{
+			Name:   "skip-untagged",
+			Usage:  "skip publish if not local .tags file",
+			EnvVar: "PLUGIN_SKIP_UNTAGGED",
+		},
 		cli.StringFlag{
 			Name:   "repo",
 			Usage:  "docker repository",
@@ -230,6 +235,7 @@ func run(c *cli.Context) error {
 			Squash:      c.Bool("squash"),
 			Pull:        c.BoolT("pull-image"),
 			Compress:    c.Bool("compress"),
+			SkipUntagged:  c.Bool("skip-untagged"),
 			Repo:        c.String("repo"),
 			LabelSchema: c.StringSlice("label-schema"),
 		},
