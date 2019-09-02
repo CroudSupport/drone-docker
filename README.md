@@ -2,6 +2,8 @@
 
 Drone plugin to build and publish Docker images to a container registry.
 
+This is used as a base image for https://github.com/CroudTech/devops-droneplugin-ecr-publisher
+
 ## Build
 
 Build the binary with the following commands:
