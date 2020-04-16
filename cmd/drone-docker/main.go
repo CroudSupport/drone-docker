@@ -30,6 +30,11 @@ func main() {
 			Usage:  "dry run disables docker push",
 			EnvVar: "PLUGIN_DRY_RUN",
 		},
+		cli.BoolFlag{
+			Name:   "disable-prune",
+			Usage:  "disable-prune disables docker system prune",
+			EnvVar: "PLUGIN_DISABLE_PRUNE",
+		},
 		cli.StringFlag{
 			Name:   "remote.url",
 			Usage:  "git remote url",
@@ -192,6 +197,7 @@ func main() {
 func run(c *cli.Context) error {
 	plugin := docker.Plugin{
 		Dryrun: c.Bool("dry-run"),
+		Disableprune: c.Bool("disable-prune"),
 		Login: docker.Login{
 			Registry: c.String("docker.registry"),
 			Username: c.String("docker.username"),

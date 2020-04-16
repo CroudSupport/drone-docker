@@ -58,6 +58,7 @@ type (
 		Build  Build  // Docker build configuration
 		Daemon Daemon // Docker daemon configuration
 		Dryrun bool   // Docker push is skipped
+		Disableprune bool // Docker system prune is disabled
 	}
 )
 
@@ -132,9 +133,11 @@ func (p Plugin) Exec() error {
 			cmds = append(cmds, commandPush(p.Build, tag)) // docker push
 		}
 	}
-
-	cmds = append(cmds, commandRmi(p.Build.Name)) // docker rmi
-	cmds = append(cmds, commandPrune())           // docker system prune -f
+	
+	if p.Disableprune == false {
+		cmds = append(cmds, commandRmi(p.Build.Name)) // docker rmi
+		cmds = append(cmds, commandPrune())           // docker system prune -f
+	}
 
 	// execute all commands in batch mode.
 	for _, cmd := range cmds {
